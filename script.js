@@ -55,4 +55,9 @@ rectangles.forEach(rectangle => {
             audio.currentTime = 0; // Reset audio to the beginning
         }
     });
+    const buyButton = document.getElementById('buy-button');
+buyButton.addEventListener('click', () => {
+    window.location.href = 'buy.html'; // Redirect to the buy page
+});
+
 });

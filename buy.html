@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Page</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to your styles -->
+    <style>
+        body {
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            font-family: 'SF Pro', sans-serif; /* Ensures consistent font usage */
+        }
+        
+        #buy-section {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ccc; /* Line under each item */
+        }
+
+        .item img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-right: 20px;
+            background-color: #fff;
+        }
+
+        .item-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-title {
+            font-family: 'SF Pro', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .buy-button {
+    background-color: rgb(82, 110, 211); /* Blue buy button */
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from links */
+    display: inline-block;
+    margin-top: 10px;
+    width: 150px; /* Fixed width for uniform button size */
+    text-align: center; /* Center text inside the button */
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+.buy-button:hover {
+    transform: scale(1.1); /* Slightly increase the size */
+    background-color: rgb(62, 90, 191); /* Darker blue on hover */
+}
+
+body {
+    scroll-behavior: smooth; /* Makes scrolling more fluid */
+}
+
+
+
+        .item-description {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Taskbar at the top -->
+    <div id="top-section"></div>
+    <div id="top-bar">
+        <div class="bar-content">
+            <span id="brand-name">Nexoz Co.</span>
+            <!-- Home button to navigate back to index.html -->
+            <a href="index.html" id="home-button">Home</a>
+        </div>
+    </div>
+
+    <!-- Main Buy Page Content -->
+    <div id="buy-section">
+        <h1>Welcome to the Buy Page</h1>
+        <p>Here you can see all items available for purchase.</p>
+        
+        <!-- Item 1 -->
+        <div class="item">
+            <img src="image1.jpg" alt="Image1"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Ipad</div>
+                <p class="item-description">I have witnessed the power of Apple's ecosystem</p>
+                <a href="https://www.apple.com/ipad" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="item">
+            <img src="image2.jpg" alt="Image2"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">AirPods Pro</div>
+                <p class="item-description">The one's I bought were in fact fake and the battery went out. AEOT</p>
+                <a href="https://www.apple.com/airpods/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="item">
+            <img src="image3.jpg" alt="Image3"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Laser</div>
+                <p class="item-description">Pew Pew Pew Pew Pew Pew Pew, PewPewPew</p>
+                <a href="https://shehds.com/products/rechargeable-waterproof-6w-rgb-animation-laser-light" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image4.jpg" alt="Image4"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Govee Lights</div>
+                <p class="item-description">SHAPES AND COLORS</p>
+                <a href="https://us.govee.com/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image5.jpg" alt="Image5"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Pacsun Baggy Jeans</div>
+                <p class="item-description">I know, I'm shocked too.</p>
+                <a href="https://www.pacsun.com/mens/jeans/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image6.jpg" alt="Image6"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Williams Jersey</div>
+                <p class="item-description">Para Carlos</p>
+                <a href="https://www.williamsf1.com/store/products/williams-racing-mens-team-jersey-navy" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image7.jpg" alt="Image7"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Alpine Jersey</div>
+                <p class="item-description">Just Cool...</p>
+                <a href="https://f1store.formula1.com/en/alpine/alpine-f1-team-pierre-gasly-2024-driver-t-shirt/t-76329613+p-0222337500797+z-7-3398192589?_ref=p-TLP:m-GRID:i-r0c0:po-0" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image8.jpg" alt="Image8"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Record Player</div>
+                <p class="item-description">Suicase Players are Bad For Records, and I want to be able to play my nicer ones without ruining them, here's an option but I also trust y'alls knowledge more!</p>
+                <a href="https://www.amazon.com/Audio-Technica-AT-LP60X-BK-Belt-Drive-Hi-Fidelity-Anti-Resonance/dp/B07N3XJ66N/ref=asc_df_B07N3XJ66N?mcid=325410a54c3330ed80a2f7f3f20c75a4&tag=hyprod-20&linkCode=df0&hvadid=693363874255&hvpos=&hvnetw=g&hvrand=15095658192780656015&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9010436&hvtargid=pla-669653279458&psc=1" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image9.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Taylor Swift Eras Tour Book</div>
+                <p class="item-description">Coffee Table Decoration</p>
+                <a href="https://www.target.com/p/the-official-taylor-swift-the-eras-tour-book-target-exclusive/-/A-92901468" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image10.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Speakers</div>
+                <p class="item-description">These one's are good but again I trust y'all more!</p>
+                <a href="https://www.amazon.com/Edifier-Powered-Monitor-Speakers-Near-Field/dp/B09FXG9BLR/ref=asc_df_B09FXG9BLR?mcid=a003771632ed37b1bbb8cbb350d2e949&tag=hyprod-20&linkCode=df0&hvadid=693461915926&hvpos=&hvnetw=g&hvrand=4889081848577190422&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9010436&hvtargid=pla-1568283915325&psc=1" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image11.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Toaster</div>
+                <p class="item-description">Do I need to explain this? I like toast.</p>
+                <a href="https://www.hobbylobby.com/home-decor-frames/kitchen-dinnerware/kitchen-appliances/mickey-mouse-toaster/p/81155164?gad_source=1&gclid=Cj0KCQiAi_G5BhDXARIsAN5SX7q9YB5tvFZK3lyAzIqVLo9mNRATwYpPT6Yw05scCErjaHPkwHs8W_kaAkx8EALw_wcB" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image12.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Rice Cooker</div>
+                <p class="item-description">I eat too much rice and this would be so nice!</p>
+                <a href="https://www.amazon.com/rice-cooker/s?k=rice+cooker" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image13.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Mickey Waffle Maker</div>
+                <p class="item-description">Keep the Magic Alive</p>
+                <a href="https://www.disneystore.com/mickey-mouse-90th-anniversary-double-flip-waffle-maker-655772017307.html" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image14.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Cool Bowls for Ramen and Rice and Things</div>
+                <p class="item-description">LET HIM COOK</p>
+                <a href="https://www.amazon.com/japanese-bowl-set/s?k=japanese+bowl+set" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image15.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Excision Lacer Hoodie</div>
+                <p class="item-description">They look so cozy and kewllll.</p>
+                <a href="https://excisionmerch.com/collections/hoodies-jackets/products/rex-lacer-hoodie-red-black-grey" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image16.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Taylor Swift the Anthology Vinyl</div>
+                <p class="item-description">So I can go into engimineering mode whilst wallowing in my collection of the little problems of a billionaire.</p>
+                <a href="https://www.target.com/p/taylor-swift-the-tortured-poets-department-the-anthology-target-exclusive-vinyl/-/A-93345523" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image17.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">RFID detector</div>
+                <p class="item-description">I have access to 3d printers, and I will have a functional MagicBand Scanner</p>
+                <a href="https://www.instructables.com/Disney-Magic-Band-Scanner/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image18.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">F1 Vintage Hoodies</div>
+                <p class="item-description">Here's an example but for more inspo trust pinterest lol.</p>
+                <a href="https://www.cotosen.com/products/mens-retro-racing-print-red-oversized-hoodie-7739387.html?locale=en&ccy=USD&monitor=US&variant=102590752&utm_source=google&utm_medium=5791002197&utm_campaign=20004080808~[U2164]~&utm_adset=&utm_content=&utm_term=U2164&gad_source=1&gclid=Cj0KCQiAi_G5BhDXARIsAN5SX7ob2LZrqkOrj0rQ4HShuhqaI-RuH2RT-3tDkD6YTplMQ6L3eLiSRGkaAjW_EALw_wcB" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image19.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Shorts</div>
+                <p class="item-description">I linked this to Rururemon but there are many good options! Uniqlo has some good ones too!</p>
+                <a href="https://shop.lululemon.com/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image20.png" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Uniqlo Basics</div>
+                <p class="item-description">Honestly most things from UNIQLO i'll like so have fun!</p>
+                <a href="https://www.uniqlo.com/us/en/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image21.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Knocked Loose Shirt</div>
+                <p class="item-description">They have dope merch what can I say</p>
+                <a href="https://knockedloose.com/collections/all" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image22.png" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Zeds Dead Merch</div>
+                <p class="item-description">He also makes dope merch.</p>
+                <a href="https://shop.zedsdead.net/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image23.png" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Ableton</div>
+                <p class="item-description">I have renewed the trial on 10 different accounts RIP: Has a HUGE student discount.</p>
+                <a href="https://www.ableton.com/en/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image24.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Pillows</div>
+                <p class="item-description">I want to be buried under a mountain of pillows. Black is the new black.</p>
+                <a href="https://www.amazon.com/Black-Accent-Pillows/s?k=Black+Accent+Pillows" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image25.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Paella Essentials: Note: DOES NOT NEED TO BE FROM LA TIENDA JUST WANTED TO LINK IT FOR VIBES</div>
+                <p class="item-description">Quiero.</p>
+                <a href="https://www.tienda.com/products/traditional-paella-kit-peregrino-pa-02?utm_medium=cpc&utm_source=google&utm_campaign=GGL%20-%20Shopping&gad_source=1&gclid=Cj0KCQiAi_G5BhDXARIsAN5SX7qch_TyTPUkymrB9AnDtm4xAtX0_hLhz8xs9KEJB1NGaQY-T3y_OYQaAs6OEALw_wcB" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image26.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Computer Upgrades?</div>
+                <p class="item-description">Want to rewire my computer so it looks better, also want to add better cooling for the case and CPU!</p>
+                <a href="https://www.bestbuy.com/site/brands/corsair/pcmcat214100050013.c?id=pcmcat214100050013" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image27.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Comfrt Set</div>
+                <p class="item-description">Very BandWagon of me but it looks so comfy.</p>
+                <a href="https://comfrt.com/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image28.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Organizers</div>
+                <p class="item-description">Want to be able to associate more things with specific places to stay more organized.</p>
+                <a href="https://www.amazon.com/s?k=acryllic+aesthetic+organizers&crid=18DKJ04UHLS0P&sprefix=acryllic+aesthetic+organizers%2Caps%2C61&ref=nb_sb_noss" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image29.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Red Bull</div>
+                <p class="item-description">I want to keep my wings.</p>
+                <a href="https://www.redbull.com/us-en" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image30.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Port Hub</div>
+                <p class="item-description">I NEED MORE PORTS AND BETTER DESK CABLE MANAGEMENT</p>
+                <a href="https://www.amazon.com/s?k=rgb+usb+hub&i=electronics&crid=3P9F45EA3QRRZ&sprefix=rgb+usb+hub%2Celectronics%2C150&ref=nb_sb_noss_2" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image31.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">External Hard Drive</div>
+                <p class="item-description">Reminder that this is mostly just a sus out the vibes of things I want list and I am defidently just trying to add a lot of things but this would genuinley be really useful. My files are so messed up.</p>
+                <a href="https://www.amazon.com/s?k=external+hard+drive+desktop+pc&i=electronics&hvadid=673768713244&hvdev=c&hvlocphy=9010436&hvnetw=g&hvqmt=e&hvrand=7432542246614440149&hvtargid=kwd-933826254208&hydadcr=19162_13375009&tag=googhydr-20&ref=pd_sl_8r3g4loipr_e" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image32.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Phone Case</div>
+                <p class="item-description">Mine has been properly annihilated and is falling apart.</p>
+                <a href="https://www.apple.com/shop/product/MPTP3ZM/A/Iphone-14-pro-max-silicone-case-with-magsafe-midnight?fnode=cc0f0e7f1d969b8ae501a6fdbf97636d885fac50988ec3116254e20a840d1735fee62d80e1be4be556533d9062f3f597264c6d486008d61a27ad6aa8378bb7c7468db968f95203f4c6d0bb637fb402223ec7e3b040281266d4d8c685d8907bab336be5e583221c5c5a428ed6bddb6dd9&fs=f%3Diphone14promax%26fh%3D458b%252Bdf8149" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image33.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Swim Trunks</div>
+                <p class="item-description">Planning Ahead</p>
+                <a href="https://www.chubbiesshorts.com/?utm_term=1408329&utm_campaign=online-tracking-link&utm_medium=affiliate&utm_source=impact&irclickid=VSmwERWGQxyKRozV1EzDpwzSUkCQTWTEExGiQI0&irgwc=1&ir_campaignid=16759&ir_adid=1408329&ir_partnerid=204240&gad_source=1&gclid=Cj0KCQiAi_G5BhDXARIsAN5SX7pcLTHQoJ4gminlPMiuoJYU6-gH1xNqt05GQwzDApb3-R3MbM3mu_AaAn9iEALw_wcB" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image34.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Pokemon Legends Z</div>
+                <p class="item-description">The switch 2 is coming out soon, but honestly just miss having a Pokemon game on my christmas list.</p>
+                <a href="https://www.nintendo.com/en-gb/Games/Nintendo-Switch-games/Pokemon-Legends-Z-A-2533423.html?srsltid=AfmBOoqYveIX_avUcreQnoUZb6u8xRbV8xV_IQxd_mvZ-MBj0S3IUrqB" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image35.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Nike Dunks</div>
+                <p class="item-description">I love my black ones and would love to switch colors.</p>
+                <a href="https://www.nike.com/w/dunk-shoes-90aohzy7ok?cp=81051560390_search_-nike%20dunks-g-19646936114-146613635940-e-c&dplnk=member&gad_source=1&gclid=Cj0KCQiAi_G5BhDXARIsAN5SX7qzoCQf8cIc-CpPJXPHWoD81DisL4LuDSPIG9AG3ckbKt9o1F2PUzYaAuauEALw_wcB&gclsrc=aw.ds" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image36.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Anua Skincare Set</div>
+                <p class="item-description">I trust the koreans. Specifically the southern ones.</p>
+                <a href="https://www.amazon.com/s?k=anua+skincare+pack&hvadid=705509424415&hvdev=c&hvlocphy=9010436&hvnetw=g&hvqmt=e&hvrand=5619056570196249631&hvtargid=kwd-2290614736947&hydadcr=27561_14522354&tag=googhydr-20&ref=pd_sl_25bgdly556_e" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image37.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Nike Socks</div>
+                <p class="item-description">So Aesthetic</p>
+                <a href="https://www.nike.com/w/mens-socks-7ny3qznik1" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image38.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Cool Rings</div>
+                <p class="item-description">We love a good ring.</p>
+                <a href="https://www.zara.com/us/en/man-accessories-jewelry-l1563.html" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image39.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Giant Snorlax</div>
+                <p class="item-description">Its a Giant Snorlax. Why would I not want a giant snorlax?</p>
+                <a href="https://www.amazon.com/giant-snorlax/s?k=giant+snorlax" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image40.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Soccer Jersey</div>
+                <p class="item-description">Any team works! Just love the style, but prefer darker jerseys!</p>
+                <a href="https://www.emirates.store/eos-store/men/football-/c-24/c-168" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image41.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Replica Cologne</div>
+                <p class="item-description">I love By the Fireplace and Sailing Day</p>
+                <a href="https://www.maisonmargiela-fragrances.us/fragrances/replica/replica-by-the-fireplace/MM005.html?srsltid=AfmBOop8BBXJ7c1qL6_BYo6m69HBG0FKu6JrokQ_ujolDh58hWhTQInS" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image42.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Disney Room Scents</div>
+                <p class="item-description">I will be so happy to come home to disney smell</p>
+                <a href="https://magiccandlecompany.com/products/pick-4-magic-room-sprays?currency=USD&variant=39592811790385&utm_source=google&utm_medium=cpc&utm_campaign=Google%20Shopping&stkn=e1217d2b002a&gad_source=1&gclid=Cj0KCQiAi_G5BhDXARIsAN5SX7orCj9FEl-cl1sd1bbBZQdoAZYhQMM9l8t_hkNLTTDm63OwlxPrTpMaAuMlEALw_wcB" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image43.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Sherpa Jacket</div>
+                <p class="item-description">Love this style jacket! Linked Jacket is Just Inspo, this can defo be found at Marshalls.</p>
+                <a href="https://www.parksproject.us/products/acadia-moose-full-zip-high-pile-fleece?variant=41828604903491" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image44.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Jaguars Shirt</div>
+                <p class="item-description">Inspired you could say.</p>
+                <a href="https://deadthreads.shop/products/jacksonville-football-premium?variant=47625326461249&country=US&currency=USD&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&tw_source=google&tw_adid=&tw_campaign=21392838698&gad_source=1&gclid=Cj0KCQiAi_G5BhDXARIsAN5SX7qzwqBznHZrQAEoxpq1w31oSG3nVCTJ9yRQKL1TRtnibQGa7IF7fIgaAgtfEALw_wcB" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image45.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Macbook</div>
+                <p class="item-description">Just to keep in mind. My laptop's battery is kind of rough and these are really efficient.</p>
+                <a href="https://example.com/apple-accessories" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image46.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Pot</div>
+                <p class="item-description">Relax I just want to cook noodles easier.</p>
+                <a href="https://www.ikea.com/us/en/cat/pots-20634/" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image47.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Hats</div>
+                <p class="item-description">Who doesnt like hats?</p>
+                <a href="https://www.homage.com/products/new-heights-hat?utm_content=newheights_pla&utm_source=google&utm_medium=cpc-nbr&utm_campaign=CP+%7C+MF+%7C+GOO+%7C+SHOP+%7C+NBR+%7C+Non-Brand+Shopping&tw_source=google&tw_adid=698763745575&tw_campaign=21259923096&gad_source=1&variant=41475835068504" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image48.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Vinyl Rack</div>
+                <p class="item-description">Untz Untz Untz Untz</p>
+                <a href="https://www.amazon.com/s?k=vinyl+rack&crid=197XP12PS5QG8&sprefix=vinyl+rack%2Caps%2C94&ref=nb_sb_noss_1" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image49.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Bedside Tray</div>
+                <p class="item-description">To Hold Things</p>
+                <a href="https://www.amazon.com/White-Bedside-Tray-Nightstand-Students/dp/B078SDM89X/ref=sr_1_8?crid=2OMB2U9EMFQXL&dib=eyJ2IjoiMSJ9.Ocbt0qdfGYPd9_7Hz6NG8lNXHVmsdnVKGGAQSyC-7-HDvSx49aYomBeOkMrLgsQOqHPBCSS03meScloLIJkzgakSHC_J0hmGrjCfP8-ivlnx-gvW54NFOysffi10OdXPvi2ktA0jo5qHKXVM1GzKqiRpoWfsV7lg88GhZpWTyDWMITA-Mh3TYYZRkAt0taVtt59oXBWHttAHRy_n1hp5ESekbUN37QzkoyqnIAoUZXEP8Al4niZbNhbZwqLPWLkwSikiqaDuCnnWH8ZAfBH01tMh5iTHjJyjsZ9iVbiRBUw.tOvk5XPfjLsw2SDIB4SatMNdwp7TOkxz0i6qsX_bU3I&dib_tag=se&keywords=bedside+tray&qid=1732048738&sprefix=bedside+tray%2Caps%2C91&sr=8-8" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="image50.jpg" alt="Apple Accessories Image"> <!-- Replace with actual image path -->
+            <div class="item-content">
+                <div class="item-title">Fun Things!</div>
+                <p class="item-description">There are alot of ideas here but honestly I just like fun things!</p>
+                <a href="fernandoslando.github.io" target="_blank" class="buy-button">Buy Now</a>
+            </div>
+        </div>
+
+        <!-- Add more items as needed -->
+    </div>
+
+    <script src="script.js"></script> <!-- Optional script inclusion -->
+</body>
+</html>

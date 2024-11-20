@@ -240,3 +240,14 @@ body, html {
     font-size: 16px;
     padding: 10px;
 }
+#home-button {
+    background-color: rgb(82, 110, 211);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from link */
+}
+
