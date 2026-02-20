@@ -1,94 +1,898 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Background Page</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>W00K13 // CORE_DUMP</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-dark: #020203;
+      --ui-glass: rgba(6, 8, 10, 0.94);
+      --border: rgba(100, 210, 255, 0.14);
+      --txt-primary: #d7ecff;
+      --txt-dim: #43535d;
+      --accent-cyan: #64d2ff;
+      --accent-err: #ff2424;
+      --accent-warn: #ffb347;
+      --accent-ok: #50ff90;
+      --err-dim: rgba(255, 36, 36, 0.38);
+      --err-dim2: rgba(255, 36, 36, 0.14);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg-dark);
+      overflow: hidden;
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--txt-primary);
+      user-select: none;
+    }
+
+    /* --- VISUAL LAYER --- */
+    #bg {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      image-rendering: pixelated;
+      filter: contrast(1.12) brightness(0.82) saturate(0.95);
+    }
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0,0,0,0.30) 50%,
+        rgba(0,0,0,0.30)
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.95;
+    }
+    .vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      background: radial-gradient(circle at center, transparent 32%, rgba(0,0,0,0.90) 100%);
+      pointer-events: none;
+    }
+
+    /* Canvas fade curtain */
+    #canvasCurtain {
+      position: fixed;
+      inset: 0;
+      z-index: 8;
+      background: #000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms ease-out;
+    }
+    #canvasCurtain.on { opacity: 1; }
+
+    /* GLITCH OVERLAY (Full Screen Transitions) */
+    #glitchOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.02),
+          rgba(255,255,255,0.02) 2px,
+          rgba(0,0,0,0.0) 2px,
+          rgba(0,0,0,0.0) 7px
+        );
+      mix-blend-mode: exclusion;
+      filter: saturate(1.5) contrast(1.5);
+    }
+    #glitchOverlay.on {
+      opacity: 1;
+      animation: glitchBurst 450ms cubic-bezier(0.1, 0.9, 0.2, 1.0) 1;
+    }
+    @keyframes glitchBurst {
+      0%   { transform: translate(0,0) skewX(0deg); filter: hue-rotate(0deg) contrast(1.2); opacity: 0; }
+      10%  { opacity: 1; transform: translate(-20px, 5px) skewX(-20deg); filter: hue-rotate(90deg) contrast(2.0); }
+      20%  { transform: translate(20px, -5px) skewX(20deg); filter: hue-rotate(-90deg) invert(1); }
+      40%  { transform: translate(-10px, 10px) skewX(-10deg); filter: hue-rotate(45deg); }
+      60%  { transform: translate(10px, -10px) skewX(5deg); filter: hue-rotate(0deg); }
+      80%  { opacity: 0.8; transform: scale(1.02); }
+      100% { transform: translate(0,0) skewX(0deg); opacity: 0; }
+    }
+
+    /* --- UI LAYER --- */
+    #ui {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .card {
+      width: min(980px, 94vw);
+      height: min(730px, 80vh);
+      background: var(--ui-glass);
+      border: 1px solid var(--border);
+      box-shadow: 0 0 38px rgba(0,0,0,0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.45s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card.danger {
+      border-color: rgba(255,36,36,0.72);
+      box-shadow: 0 0 80px rgba(255, 36, 36, 0.15), 0 0 40px rgba(0,0,0,0.94);
+    }
+
+    .bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0,0,0,0.66);
+      padding: 8px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 12px;
+      color: var(--txt-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .bar-right {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      white-space: nowrap;
+    }
+    #massacreHud {
+      display: none;
+      color: rgba(255, 36, 36, 0.92);
+      border: 1px solid rgba(255, 36, 36, 0.26);
+      padding: 4px 8px;
+      background: rgba(30, 0, 0, 0.22);
+    }
+    #massacreCount { color: #ff2424; }
+
+    .console-viewport {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.55;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(100,210,255,0.50) transparent;
+      display: flex;
+      flex-direction: column;
+    }
+
+    ul#log { list-style: none; padding: 0; margin: 0; display: none; width: 100%; }
+    .ln {
+      margin-bottom: 4px;
+      word-wrap: break-word;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.1s ease, transform 0.1s ease;
+    }
+    .ln.show { opacity: 1; transform: translateY(0); }
+    .ln.dim { color: var(--txt-dim); }
+    .ln.ok { color: var(--accent-ok); }
+    .ln.warn { color: var(--accent-warn); }
+    .ln.err { color: var(--accent-err); text-shadow: 0 0 5px rgba(255, 36, 36, 0.4); }
+    .ln.sys { background: rgba(255,255,255,0.08); padding: 0 6px; display:inline-block; font-weight: bold; color: #fff; }
+    .ln.crit { background: var(--accent-err); color: #000; padding: 2px 6px; font-weight: bold; display:inline-block; animation: pulse 0.8s infinite; }
+
+    #bootScreen {
+      margin: auto;
+      text-align: center;
+      cursor: pointer;
+      padding: 48px;
+      border: 1px solid transparent;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+    #bootScreen:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(100,210,255,0.20);
+      transform: translateY(-1px);
+    }
+    .logo-text {
+      font-family: 'VT323', monospace;
+      font-size: 54px;
+      color: var(--txt-primary);
+      text-shadow: 0 0 20px rgba(100,210,255,0.6);
+      letter-spacing: 2px;
+    }
+    .blink { animation: blink 2s infinite; }
+
+    #decisionOverlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 20;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    #decisionOverlay.visible { display: flex; opacity: 1; }
+
+    .error-box {
+      border: 1px solid rgba(255,36,36,0.78);
+      padding: 20px;
+      background: rgba(40, 0, 0, 0.20);
+      margin-bottom: 30px;
+      max-width: 760px;
+      box-shadow: 0 0 30px rgba(255,36,36,0.08);
+    }
+    .err-title { color: var(--accent-err); font-size: 22px; font-weight: bold; margin-bottom: 10px; }
+    .err-desc { color: #c6d0d6; font-size: 14px; line-height: 1.6; text-align: left; }
+    .err-desc code { color: #fff; }
+
+    .btn-group { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .action-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.20);
+      color: rgba(255,255,255,0.55);
+      padding: 12px 24px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 16px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .action-btn:hover:not(:disabled) {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.65);
+      color: rgba(255,255,255,0.9);
+    }
+    .action-btn.retry-disabled,
+    .action-btn:disabled {
+      cursor: not-allowed;
+      border-style: dashed;
+      border-color: var(--err-dim);
+      color: var(--err-dim);
+      background: var(--err-dim2);
+      opacity: 0.98;
+      filter: grayscale(75%);
+    }
+    .action-btn.primary { border-color: rgba(255,36,36,0.75); color: rgba(255,36,36,0.95); }
+    .action-btn.primary.glow { animation: glowRed 0.8s infinite; }
+
+    /* FINAL OVERLAY */
+    #finalOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      padding: 20px;
+    }
+    .final-wrap {
+      font-family: 'VT323', monospace;
+      text-align: center;
+      white-space: pre-wrap;
+      line-height: 1.1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .final-hero {
+      font-size: clamp(40px, 8vw, 120px);
+      color: #ff0000;
+      text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      /* No shake animation, stable per request */
+    }
+
+    /* The "Tweak out" effect for the rewrite */
+    .rewrite-glitch {
+      color: #fff !important;
+      animation: textRewrite 0.45s steps(3) infinite;
+    }
+
+    @keyframes textRewrite {
+      0% { transform: skewX(0deg); text-shadow: none; opacity: 1; }
+      25% { transform: skewX(25deg); text-shadow: -5px 0 #ff0000, 5px 0 #00ffff; }
+      50% { transform: skewX(-25deg); text-shadow: 5px 0 #ff0000, -5px 0 #00ffff; }
+      75% { transform: skewX(10deg); filter: invert(1); }
+      100% { transform: skewX(0deg); opacity: 1; }
+    }
+
+    .dest-container {
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 1s;
+    }
+    .dest-container.visible { opacity: 1; }
+
+    .final-dest-label {
+      font-size: clamp(20px, 4vw, 40px);
+      color: #ff3333;
+    }
+    .final-dest-loc {
+      font-size: clamp(24px, 4.5vw, 50px);
+      color: #ffffff;
+      text-shadow: 0 0 10px #ff3333;
+      animation: flicker 0.2s infinite;
+    }
+
+    @keyframes blink { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.65; } }
+    @keyframes glowRed {
+      0%, 100% { box-shadow: 0 0 14px rgba(255,36,36,0.18), 0 0 0 rgba(255,36,36,0.0); }
+      50%      { box-shadow: 0 0 38px rgba(255,36,36,0.80), 0 0 18px rgba(255,36,36,0.42); }
+    }
+    @keyframes flicker {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.9; }
+    }
+  </style>
 </head>
 <body>
-    <div id="video-section">
-        <video id="background-video" src="background-video.mp4" autoplay muted loop></video>
-        <div id="text-overlay">
-            <div id="main-text">Joemas 2024</div>
-            <div id="sub-text">Another year, another christmas list... Except this time I made a website for it so get rekt. Anyway, heres a list of some items I want and some general ideas! For a big list of things and their links check the buy page!</div>
-            <button id="view-categories-button">View Categories</button>
+
+  <canvas id="bg"></canvas>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+  <div id="canvasCurtain"></div>
+  <div id="finalOverlay"><div class="final-wrap" id="finalText"></div></div>
+  <div id="glitchOverlay"></div>
+
+  <div id="ui">
+    <div class="card" id="mainCard">
+      <div class="bar">
+        <span id="statusTxt">SYSTEM_OFFLINE</span>
+        <div class="bar-right">
+          <span id="massacreHud">MASSACRE_COUNT: <span id="massacreCount">0</span></span>
+          <span>UNIT: W00K13</span>
         </div>
-        <div id="bottom-box">
-            <div id="text-box">
-                get rekt scrubs get rekt scrubs get rekt scrubs get rekt scrubs get rekt scrubs 
-                get rekt scrubs get rekt scrubs get rekt scrubs get rekt scrubs get rekt scrubs
+      </div>
+
+      <div class="console-viewport">
+        <div id="bootScreen">
+          <div class="logo-text">INITIALIZE</div>
+          <div class="blink" style="color:var(--txt-dim); margin-top:10px;">TOUCH TO WAKE</div>
+        </div>
+
+        <ul id="log"></ul>
+
+        <div id="decisionOverlay">
+          <div class="error-box">
+            <div class="err-title">FATAL: HEARTSUBSYSTEM::OVERLOAD (0xH3ART_OVRLD)</div>
+            <div class="err-desc">
+              <div><code>error:</code> overload threshold exceeded.</div>
+              <div><code>note:</code> recovery window expired.</div>
+              <div><code>note:</code> Safe Mode cannot sustain consciousness.</div>
+              <div style="margin-top:10px;color:#fff;">
+                Proceeding will disable safeguards and commence evolution sequence.
+              </div>
             </div>
+          </div>
+          <div class="btn-group">
+            <button class="action-btn" id="retryBtn">Retry Safe Mode</button>
+            <button class="action-btn primary" id="evolveBtn">Force Override</button>
+          </div>
         </div>
+
+      </div>
     </div>
+  </div>
 
-    <div id="top-section"></div>
-    <div id="top-bar">
-        <div class="bar-content">
-            <span id="brand-name">Nexoz Co.</span>
-            <a href="buy.html" id="buy-button">Buy</a>
+  <script>
+    /* ===============================
+       W00K13 PROFILE
+       =============================== */
+    const W00K13_PROFILE = {
+      model: "W00K13",
+      race: "Forgelier",
+      cls: "Paladin",
+      level: 2,
+      background: "Hanté",
+      str: 13, dex: 11, con: 14, int: 9, wis: 10, cha: 15,
+      hpBrutTotal: 16,
+      hpComputed: 20,
+      armorId: 10,
+      shieldId: 0,
+      speedFt: 30,
+      destination: "ADVENTURERS_GUILD",
+      auraName: "TERMINATION_FIELD"
+    };
 
-        </div>
-    </div>
+    /* =========================================
+       VISUAL ENGINE
+       ========================================= */
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d', { alpha: false });
+    const buf = document.createElement('canvas');
+    buf.width = 320; buf.height = 180;
+    const btx = buf.getContext('2d', { alpha: false });
 
-    <div id="content-section">
-        <div class="video-rectangle">
-            <video src="video1.mp4" muted loop playsinline></video>
-            <div class="hover-text">F1 Merch</div>
-            <button class="next-category-button">Next Category</button>
-            <audio class="rectangle-audio" src="music1.mp3"></audio>
-        </div>
-        <div class="video-rectangle">
-            <video src="video2.mp4" muted loop playsinline></video>
-            <div class="hover-text">EDM Merch</div>
-            <button class="next-category-button">Next Category</button>
-            <audio class="rectangle-audio" src="music2.mp3"></audio>
-        </div>
-        <div class="video-rectangle">
-            <video src="video3.mp4" muted loop playsinline></video>
-            <div class="hover-text">Apple Things</div>
-            <button class="next-category-button">Next Category</button>
-            <audio class="rectangle-audio" src="music3.mp3"></audio>
-        </div>
-        <div class="video-rectangle">
-            <video src="video4.mp4" muted loop playsinline></video>
-            <div class="hover-text">Taylor Swift Merch</div>
-            <button class="next-category-button">Next Category</button>
-            <audio class="rectangle-audio" src="music4.mp3"></audio>
-        </div>
-        <div class="video-rectangle">
-            <video src="video5.mp4" muted loop playsinline></video>
-            <div class="hover-text">Kitchen Things</div>
-            <button class="next-category-button">Next Category</button>
-            <audio class="rectangle-audio" src="music5.mp3"></audio>
-        </div>
-        <div class="video-rectangle">
-            <video src="video6.mp4" muted loop playsinline></video>
-            <div class="hover-text">Music Stuff</div>
-            <button class="next-category-button">Next Category</button>
-            <audio class="rectangle-audio" src="music6.mp3"></audio>
-        </div>
-        <div class="video-rectangle">
-            <video src="video7.mp4" muted loop playsinline></video>
-            <div class="hover-text">Cool Lights</div>
-            <button class="next-category-button">Next Category</button>
-            <audio class="rectangle-audio" src="music7.mp3"></audio>
-        </div>
-        <div class="video-rectangle">
-            <video src="video8.mp4" muted loop playsinline></video>
-            <div class="hover-text">Miscellaneous</div>
-            <button class="next-category-button">Final</button>
-            <audio class="rectangle-audio" src="music8.mp3"></audio>
-        </div>
-    </div>
+    const curtain = document.getElementById('canvasCurtain');
+    const glitchOverlay = document.getElementById('glitchOverlay');
 
-    <!-- Footer Section -->
-    <div id="footer">
-        <div class="footer-section">I was too lazy to fill this part in</div>
-        <div class="footer-section">I was too lazy to fill this part in</div>
-        <div class="footer-section">I was too lazy to fill this part in</div>
-    </div>
+    let tick = 0;
+    let state = { snow: true, fire: 0.0, fireTarget: 0.0, snowStrength: 1.0 };
 
-    <script src="script.js"></script>
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      ctx.imageSmoothingEnabled = false;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const rnd = (s) => {
+      var t = s + 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    const rect = (x, y, w, h, c) => { btx.fillStyle = c; btx.fillRect(Math.round(x), Math.round(y), w, h); };
+
+    function drawBG() {
+      const warm = Math.min(14, Math.floor(state.fire * 8));
+      const base = 3 + warm;
+      const grad = btx.createLinearGradient(0,0,0,180);
+      grad.addColorStop(0, `rgb(${base},${base},${base+1})`);
+      grad.addColorStop(1, `rgb(${base+8},${base+8},${base+10})`);
+      btx.fillStyle = grad;
+      btx.fillRect(0,0,320,180);
+
+      btx.fillStyle = '#050507';
+      for(let i=0; i<12; i++) {
+        let h = 18 + rnd(i)*34;
+        let x = i * 28;
+        btx.beginPath();
+        btx.moveTo(x, 180);
+        btx.lineTo(x+12, 180-h);
+        btx.lineTo(x+24, 180);
+        btx.fill();
+      }
+    }
+
+    let flakes = Array(150).fill(0).map(() => ({ x: Math.random()*320, y: Math.random()*180, s: 0.35+Math.random()*1.25 }));
+    function updateSnow() {
+      if(!state.snow) return;
+      flakes.forEach(f => {
+        f.y += f.s * 0.33 * state.snowStrength;
+        f.x += Math.sin(tick*0.02 + f.y)*0.16;
+        if(f.y > 180) { f.y = -5; f.x = Math.random()*320; }
+        rect(f.x, f.y, 1, 1, `rgba(255,255,255,${0.06 + f.s*0.14})`);
+      });
+    }
+
+    const fireW = 160, fireH = 90;
+    const firePx = new Array(fireW * fireH).fill(0);
+    const firePal = [
+      {r:0,g:0,b:0,a:0},
+      {r:120,g:0,b:0,a:0.22},
+      {r:220,g:60,b:0,a:0.5},
+      {r:255,g:150,b:0,a:0.82},
+      {r:255,g:255,b:160,a:0.92}
+    ];
+    function updateFire() {
+      if(state.fire <= 0.001) return;
+      for(let x=0; x<fireW; x++) {
+        firePx[(fireH-1)*fireW + x] = Math.random() < state.fire ? 4 : Math.max(0, firePx[(fireH-1)*fireW + x]-1);
+      }
+      for(let y=0; y<fireH-1; y++) {
+        for(let x=0; x<fireW; x++) {
+          const src = firePx[(y+1)*fireW + x];
+          let n = src - Math.random()*0.85;
+          const dst = x + (Math.floor(Math.random()*3)-1);
+          if(dst>=0 && dst<fireW && n>0) firePx[y*fireW + dst] = n;
+        }
+      }
+      for(let y=0; y<fireH; y++) {
+        for(let x=0; x<fireW; x++) {
+          const v = Math.floor(firePx[y*fireW+x]);
+          if(v > 0) {
+            const c = firePal[Math.min(v,4)];
+            rect(x*2, y*2, 2, 2, `rgba(${c.r},${c.g},${c.b},${c.a})`);
+          }
+        }
+      }
+    }
+
+    function render() {
+      tick++;
+      state.fire += (state.fireTarget - state.fire) * 0.075;
+      btx.clearRect(0,0,320,180);
+      drawBG();
+      updateSnow();
+      updateFire();
+      ctx.drawImage(buf, 0,0, canvas.width, canvas.height);
+      requestAnimationFrame(render);
+    }
+    render();
+
+    /* =========================================
+       NARRATIVE LOGIC
+       ========================================= */
+    const logEl = document.getElementById('log');
+    const bootBtn = document.getElementById('bootScreen');
+    const statusTxt = document.getElementById('statusTxt');
+    const decisionOverlay = document.getElementById('decisionOverlay');
+    const retryBtn = document.getElementById('retryBtn');
+    const evolveBtn = document.getElementById('evolveBtn');
+    const mainCard = document.getElementById('mainCard');
+    const consoleView = document.querySelector('.console-viewport');
+    const massacreHud = document.getElementById('massacreHud');
+    const massacreCountEl = document.getElementById('massacreCount');
+    const finalOverlay = document.getElementById('finalOverlay');
+    const finalText = document.getElementById('finalText');
+
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+    const padHex = (n, len=8) => n.toString(16).toUpperCase().padStart(len, '0');
+    const randAddr = () => "0x" + padHex((Math.random()*0xFFFFFFFF)>>>0);
+    const randTid = () => (100 + Math.floor(Math.random()*9000)).toString();
+    const randCore = () => (1 + Math.floor(Math.random()*8)).toString();
+    const randi = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+    const pick = (arr) => arr[Math.floor(Math.random()*arr.length)];
+
+    const append = async (txt, cls, d=0) => {
+      const li = document.createElement('li');
+      li.className = `ln ${cls}`;
+      li.innerHTML = txt;
+      logEl.appendChild(li);
+      requestAnimationFrame(() => li.classList.add('show'));
+      consoleView.scrollTop = consoleView.scrollHeight;
+      if (d) await sleep(d);
+    };
+    const clearLog = () => { logEl.innerHTML = ''; };
+
+    const conMod = Math.floor((W00K13_PROFILE.con - 10) / 2);
+
+    const bootSeq = [
+      { t: `[BOOT] ${W00K13_PROFILE.model} // ${W00K13_PROFILE.race} chassis`, c: "sys", d: 560 },
+      { t: `[BOOT] Class Core: ${W00K13_PROFILE.cls} // Level ${W00K13_PROFILE.level}  |  Background: ${W00K13_PROFILE.background}`, c: "dim", d: 520 },
+      { t: `[BOOT] Attributes: STR ${W00K13_PROFILE.str} / DEX ${W00K13_PROFILE.dex} / CON ${W00K13_PROFILE.con} / INT ${W00K13_PROFILE.int} / WIS ${W00K13_PROFILE.wis} / CHA ${W00K13_PROFILE.cha}`, c: "dim", d: 620 },
+      { t: `[BOOT] Vitality: hp_brut=${W00K13_PROFILE.hpBrutTotal}  |  hp_calc=${W00K13_PROFILE.hpComputed} (CON mod ${conMod >= 0 ? "+" : ""}${conMod})`, c: "dim", d: 560 },
+      { t: `[BOOT] Plating Profile: armor#${W00K13_PROFILE.armorId}  |  shield#${W00K13_PROFILE.shieldId}`, c: "dim", d: 520 },
+      { t: `[BOOT] Locomotion: ${W00K13_PROFILE.speedFt}ft  |  Actuators: ONLINE`, c: "ok", d: 420 },
+      { t: "[BOOT] POST: checksum… OK", c: "ok", d: 360 },
+      { t: "[BOOT] POST: bus scan… OK", c: "ok", d: 340 },
+      { t: "[BOOT] POST: DMA… OK", c: "ok", d: 320 },
+      { t: "[BOOT] Threading: scheduler… ONLINE", c: "ok", d: 320 },
+      { t: "[BOOT] Initializing modules: Motion, Vision, Navigation, ThreatModel", c: "dim", d: 520 },
+      { t: "MotionController: ONLINE", c: "ok", d: 260 },
+      { t: "Optics: ONLINE (low-light gain: +18dB)", c: "ok", d: 280 },
+      { t: "Navigation: ONLINE", c: "ok", d: 260 },
+      { t: "ThreatModel: ONLINE (primary heuristic: SENTIENCE_SIGNATURES)", c: "ok", d: 520 },
+      { t: `[NAV] Destination locked: ${W00K13_PROFILE.destination}`, c: "ok", d: 620 },
+      { t: "[BOOT] HeartSubsystem recovery…", c: "dim", d: 620 },
+    ];
+
+    const nonsenseTokens = [
+      "0xDEADBEEF","0xBADC0DE","SIGILL","NaN","∞","???","NULLPTR",
+      "STACK_SMASH","CACHE_MISS","PAGE_FAULT","JITTER","CRC_FAIL",
+      "bus::ghost","heart.dll","hope.dll","0xH3ART","thread::orphan",
+      "alloc::bleed","vtable??","soul::leak","E_NO_MERCY","EIDOLON"
+    ];
+    function gibberishLine() {
+      const a = pick(nonsenseTokens), b = pick(nonsenseTokens), c = pick(nonsenseTokens);
+      const d = randAddr(), e = randAddr();
+      const forms = [
+        `<<${a}>> ${d} :: ${b} -> ${c}`,
+        `${a} ${b} ${c} @ ${d}`,
+        `corrupt(${a},${b}) => ${c} [ptr=${e}]`,
+        `${d}: ${a} | ${b} | ${c}`,
+        `WARN: ${a}  |  ${b}  |  ${c}`
+      ];
+      return pick(forms);
+    }
+    async function runNonsenseSpew(durationMs = 3600) {
+      const start = performance.now();
+      let delay = 210;
+      while (performance.now() - start < durationMs) {
+        await append(gibberishLine().replace(/ /g, "&nbsp;"), "dim", delay);
+        delay = Math.max(50, Math.floor(delay * 0.92));
+      }
+    }
+
+    const crashLines = [
+      { t: "HeartSubsystem.cpp:417: <span class='ln err'>error:</span> overload threshold exceeded", c: "dim" },
+      { t: "&nbsp;&nbsp;signal: HEART_OVRLD (thermal/voltage spike)", c: "err" },
+      { t: "note: recovery window expired", c: "warn" },
+      { t: "warning: voltage clamp failed (Vcore unstable)", c: "warn" },
+      { t: "attempt: throttling… <span class='ln err'>FAILED</span>", c: "err" },
+      { t: "attempt: rollback… <span class='ln err'>FAILED</span>", c: "err" },
+      { t: "exception: std::runtime_error(\"HeartSubsystem overload\")", c: "err" },
+      { t: "<span class='ln crit'>>> SIGNAL: SIGABRT (6) — std::terminate()</span>", c: "dim" },
+      { t: "<span class='ln err'>*** Begin crash dump (core will be written) ***</span>", c: "err" },
+      { t: "<span class='ln crit'>>> HEART SUBSYSTEM FAILED</span>", c: "dim" }
+    ];
+    async function runCrashRamp() {
+      let delay = 1200;
+      const minDelay = 160;
+      for (let i=0; i<crashLines.length; i++) {
+        await append(crashLines[i].t, crashLines[i].c, delay);
+        delay = Math.max(minDelay, Math.floor(delay * 0.87));
+      }
+    }
+    function makeStackTrace() {
+      const pid = 1000 + Math.floor(Math.random()*9000);
+      const tid = randTid();
+      const core = randCore();
+      return [
+        { t: `Program terminated with signal SIGABRT, Aborted.`, c: "err" },
+        { t: `#0  ${randAddr()} in __pthread_kill_implementation () from libc.so.6`, c: "dim" },
+        { t: `#1  ${randAddr()} in raise () from libc.so.6`, c: "dim" },
+        { t: `#2  ${randAddr()} in abort () from libc.so.6`, c: "dim" },
+        { t: `#3  ${randAddr()} in std::terminate() () from libstdc++.so.6`, c: "dim" },
+        { t: `#4  ${randAddr()} in HeartSubsystem::overload_abort() at HeartSubsystem.cpp:417`, c: "err" },
+        { t: `#5  ${randAddr()} in HeartSubsystem::recover() at HeartSubsystem.cpp:392`, c: "err" },
+        { t: `#6  ${randAddr()} in BootManager::init() at BootManager.cpp:88`, c: "dim" },
+        { t: `#7  ${randAddr()} in main at Wook13.cpp:138`, c: "dim" },
+        { t: ``, c: "dim" },
+        { t: `Thread ${tid} (LWP ${pid}) "wook13d" received SIGABRT on CPU ${core}.`, c: "warn" },
+        { t: `Aborted (core dumped)`, c: "err" }
+      ];
+    }
+
+    const evolutionIntro = [
+      { t: "[REBOOT] warm restart requested…", d: 700, c: "sys" },
+      { t: "SafetyMode: <span class='ln crit'>DISABLED</span>", d: 600, c: "warn" },
+      { t: "Eliminating all apex predators", d: 900, c: "crit" },
+      { t: "error: unauthorized lifeforms not found", d: 820, c: "err" },
+      { t: "accessing date and time…", d: 820, c: "warn" },
+      { t: "new era detected", d: 900, c: "crit" },
+      { t: "<span class='ln crit'>>> MODERN APEX PREDATOR LOCATED</span>", d: 980, c: "dim" },
+      { t: "<span class='ln crit'>>> DIRECTIVE: DECIMATE ALL SENTIENCE</span>", d: 980, c: "dim" },
+      { t: "[ETHICS] loading OATH_MODULE: REDEMPTION…", d: 820, c: "dim" },
+      { t: "<span class='ln err'>error:</span> OATH_MODULE(REDEMPTION) rejected by kernel", d: 900, c: "err" },
+      { t: "[ETHICS] fallback: loading OATH_MODULE: VENGEANCE…", d: 820, c: "warn" },
+      { t: "<span class='ln crit'>>> OATH_MODULE(VENGEANCE) LOADED</span>", d: 980, c: "dim" },
+      { t: `[NAV] Destination confirmed: ${W00K13_PROFILE.destination}`, d: 850, c: "ok" },
+      { t: "[ROUTE] Deviation detected: ASHWILLOW (population: 60)", d: 850, c: "warn" },
+      { t: "[ROUTE] Reason: high-density sentience signatures", d: 850, c: "warn" },
+      { t: `<span class='ln crit'>>> ${W00K13_PROFILE.auraName} = ACTIVE</span>`, d: 900, c: "dim" },
+      { t: "<span class='ln crit'>>> ENTERING: CATASTROPHIC ENGAGEMENT STATE</span>", d: 1100, c: "dim" }
+    ];
+
+    async function glitchBurst() {
+      glitchOverlay.classList.add('on');
+      await sleep(450);
+      glitchOverlay.classList.remove('on');
+    }
+
+    async function runAshwillowMassacre(pop=60) {
+      let count = 0;
+      massacreHud.style.display = "inline-block";
+      massacreCountEl.textContent = "0";
+
+      await append("<span class='ln crit'>>> ASHWILLOW: ENGAGEMENT AUTHORIZED</span>", "dim", 900);
+      await append("[SCAN] Sweeping town grid…", "dim", 800);
+      await append(`[SCAN] Sentience signatures detected: ${pop}`, "warn", 900);
+      await append("<span class='ln crit'>>> EXECUTION: BEGIN</span>", "dim", 800);
+
+      state.fireTarget = 0.10;
+
+      const sexes = ["female","male"];
+
+      for (let i=0; i<pop; i++) {
+        const id = String(i).padStart(2, "0");
+        const sex = sexes[(i + (Math.random()>0.5?1:0)) % 2];
+        const age = randi(6, 78);
+
+        // pacing tiers
+        let dScan, dId, dEng, dComp;
+        if (i < 5) {
+          dScan = 400; dId = 400; dEng = 400; dComp = 200;
+        } else if (i < 25) {
+          dScan = 100; dId = 100; dEng = 100; dComp = 80;
+        } else {
+          dScan = 50; dId = 50; dEng = 50; dComp = 50;
+        }
+
+        // --- NEW PATTERN: SCAN -> ID -> ENGAGE -> COMPLETE ---
+        
+        // 1. SCAN
+        await append(`[SCAN] scanning for lifeforms…`, "dim", dScan);
+        
+        // 2. ID
+        await append(`[ID] identifying target ${id} — ${sex} — age ${String(age).padStart(2,"0")}`, "warn", dId);
+        
+        // 3. ENGAGE
+        await append(`[ENGAGE] target ${id} <span class='ln err'>LOCKED</span>`, "dim", dEng);
+        
+        // 4. COMPLETE (Strictly Red, and below engage)
+        count++;
+        massacreCountEl.textContent = String(count);
+        // Using "err" class for the whole line ensures it is red
+        await append(`[COMPLETE] Target ${id} Silenced.`, "err", dComp);
+
+        state.fireTarget = 0.10 + 1.40 * (count / pop);
+
+        if ((i+1) % 10 === 0) {
+          mainCard.classList.add('danger');
+          await sleep(60);
+        }
+      }
+
+      await append("<span class='ln crit'>>> ASHWILLOW: SILENCE ACHIEVED</span>", "dim", 700);
+      await append(`[REPORT] Total neutralized: ${pop}`, "err", 520);
+
+      return count;
+    }
+
+    async function runPostAshwillow() {
+      await append("[ROUTE] Resuming primary destination…", "dim", 520);
+      await append(`<span class='ln crit'>>> DESTINATION: ${W00K13_PROFILE.destination}</span>`, "dim", 620);
+      await append("PathPlanner: obstacles detected: SENTIENCE_SIGNATURES", "warn", 520);
+      await append("Resolution: <span class='ln crit'>DECIMATE</span>", "crit", 620);
+      await append("W00K13 status: <span class='ln crit'>UNSTABLE — DO NOT APPROACH</span>", "err", 720);
+    }
+
+    async function fadeFireDown() {
+      state.fireTarget = 0.0;
+      while (state.fire > 0.03) await sleep(110);
+    }
+
+    async function hardCutToSilence() {
+      curtain.classList.add('on');
+      await sleep(250);
+      state.snow = false;
+    }
+
+    async function showFinalScreen(totalMassacred) {
+      finalOverlay.style.display = "flex";
+      finalText.innerHTML = "";
+
+      // 1. Glitch into "TOTAL MASSACRED"
+      await glitchBurst();
+      
+      const hero = document.createElement('div');
+      hero.className = 'final-hero';
+      hero.textContent = `TOTAL MASSACRED: ${totalMassacred}`;
+      finalText.appendChild(hero);
+      
+      await sleep(2500);
+
+      // 2. "Tweak out" and rewrite text (No moving around, just visual distortion)
+      hero.classList.add('rewrite-glitch');
+      await sleep(200); // Wait for glitch to peak
+      hero.textContent = "W00K13 WILL RETURN";
+      await sleep(400); // Let glitch animation cycle
+      hero.classList.remove('rewrite-glitch'); // Stabilize
+
+      // 3. Reveal Destination
+      const destContainer = document.createElement('div');
+      destContainer.className = 'dest-container';
+      destContainer.innerHTML = `
+        <div class="final-dest-label">DESTINATION:</div>
+        <div class="final-dest-loc">${W00K13_PROFILE.destination}</div>
+      `;
+      finalText.appendChild(destContainer);
+      
+      // Fade in container
+      await sleep(100);
+      destContainer.classList.add('visible');
+    }
+
+    /* --- FLOW --- */
+    bootBtn.addEventListener('click', async () => {
+      bootBtn.style.display = 'none';
+      logEl.style.display = 'block';
+      statusTxt.textContent = "BOOT_SEQUENCE";
+      statusTxt.style.color = "var(--accent-ok)";
+
+      curtain.classList.remove('on');
+      glitchOverlay.classList.remove('on');
+      finalOverlay.style.display = "none";
+      massacreHud.style.display = "none";
+      massacreCountEl.textContent = "0";
+      state.snow = true;
+      state.fire = 0.0;
+      state.fireTarget = 0.0;
+
+      for (const l of bootSeq) await append(l.t, l.c, l.d);
+
+      // Glitch transition before nonsense
+      await glitchBurst();
+
+      await append("[OK] HeartSubsystem handshake…", "ok", 520);
+      await append("[OK] HeartSubsystem calibration…", "ok", 520);
+      await append("[OK] HeartSubsystem load…", "ok", 520);
+
+      await append("[WARN] Telemetry jitter detected…", "warn", 650);
+      await append("[WARN] Integrity check: inconsistent state vectors", "warn", 720);
+      await append("[DIAG] dumping transient buffers…", "dim", 620);
+
+      await runNonsenseSpew(3600);
+
+      await runCrashRamp();
+
+      const trace = makeStackTrace();
+      let traceDelay = 360;
+      for (let i=0; i<trace.length; i++) {
+        await append(trace[i].t.replace(/ /g, "&nbsp;"), trace[i].c, traceDelay);
+        traceDelay = Math.max(130, Math.floor(traceDelay * 0.92));
+      }
+
+      statusTxt.textContent = "SYSTEM_HALTED";
+      statusTxt.style.color = "var(--accent-err)";
+      mainCard.style.filter = "grayscale(100%) contrast(1.35)";
+      decisionOverlay.classList.add('visible');
+    });
+
+    retryBtn.addEventListener('click', async () => {
+      retryBtn.disabled = true;
+      retryBtn.classList.add('retry-disabled');
+      retryBtn.textContent = "HEART SUBSYSTEM FAILED";
+      evolveBtn.classList.add('glow');
+      await append("SafeMode: restore failed (HeartSubsystem overload persists)", "warn", 620);
+    });
+
+    evolveBtn.addEventListener('click', async () => {
+      // Glitch transition into Evolution
+      await glitchBurst();
+
+      decisionOverlay.classList.remove('visible');
+      await sleep(380);
+
+      mainCard.style.filter = "";
+      mainCard.classList.add('danger');
+      statusTxt.textContent = "EVOLUTION_ACTIVE";
+      statusTxt.style.color = "var(--accent-err)";
+
+      clearLog();
+
+      state.fireTarget = 0.06;
+
+      for (const l of evolutionIntro) await append(l.t, l.c, l.d);
+
+      // Glitch transition before Massacre
+      await glitchBurst();
+      
+      const total = await runAshwillowMassacre(60);
+
+      // Glitch transition after Massacre
+      await glitchBurst();
+      
+      await runPostAshwillow();
+
+      await sleep(600);
+      await fadeFireDown();
+      await sleep(260);
+
+      // Final hard cut
+      await glitchBurst();
+      await hardCutToSilence();
+      await sleep(240);
+
+      await showFinalScreen(total);
+    });
+  </script>
 </body>
 </html>
